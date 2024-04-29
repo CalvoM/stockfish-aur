@@ -7,6 +7,7 @@
 # Contributor: Justin Blanchard <UncombedCoconut at gmail dot com>
 # Contributor: Auguste Pop < auguste [at] gmail [dot] com >
 # Contributor: SandaruKasa <echo c2FuZGFydWthc2ErYXVyQHlhLnJ1Cg== | base64 -d>
+# Contributor: bagasdotme
 
 pkgname=stockfish
 pkgver=16.1
@@ -17,8 +18,20 @@ arch=('x86_64' 'i686' 'armv7h' 'aarch64')
 url="https://stockfishchess.org/"
 license=('GPL3')
 depends=('glibc')
-source=("$pkgname-$pkgver.zip::https://github.com/official-stockfish/Stockfish/archive/sf_$pkgver.zip")
-sha512sums=('bfaa5c644d2acb8538b1a2c72fdf58c6b0ba6cbb3a4e1a335391faa1529f1069eca888295bd4eef0e887860185a3e0e18529ab609829738c420a0c810be5cca4')
+# Check EvalFileDefaultName{Big,Small} in src/evaluate.h and change accordingly
+_net_name_big=('b1a57edbea57')
+_net_name_small=('baff1ede1f90')
+source=("$pkgname-$pkgver.zip::https://github.com/official-stockfish/Stockfish/archive/sf_$pkgver.zip"
+        "https://tests.stockfishchess.org/api/nn/nn-${_net_name_big}.nnue"
+        "https://tests.stockfishchess.org/api/nn/nn-${_net_name_small}.nnue")
+sha512sums=('bfaa5c644d2acb8538b1a2c72fdf58c6b0ba6cbb3a4e1a335391faa1529f1069eca888295bd4eef0e887860185a3e0e18529ab609829738c420a0c810be5cca4'
+            'de2141ba301dd4da0cfa5d3a8f3574fa0ac9b24915fa1802654ad8baf274157feb1fd0ce96aae3893b789a1bb1df8eccdb4a5a331756802bebde3c4d1db5f1de'
+            '56358da4810a2bf5b903668d8243ec888a0a64302a893207074b3f1644c9877ddd4557303f025eabcc6e0f7b31af42c1265ba2fd34209df9dd0ea205d4f4a8e9')
+
+prepare() {
+  ln -sf "${srcdir}/nn-${_net_name_big}.nnue" "Stockfish-sf_${pkgver}/src"
+  ln -sf "${srcdir}/nn-${_net_name_small}.nnue" "Stockfish-sf_${pkgver}/src"
+}
 
 build() {
   cd "Stockfish-sf_${pkgver}/src"
