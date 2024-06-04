@@ -8,6 +8,7 @@
 # Contributor: Auguste Pop < auguste [at] gmail [dot] com >
 # Contributor: SandaruKasa <echo c2FuZGFydWthc2ErYXVyQHlhLnJ1Cg== | base64 -d>
 # Contributor: bagasdotme
+# Contributor: HurricanePootis
 
 pkgname=stockfish
 pkgver=16.1
@@ -16,8 +17,8 @@ epoch=1
 pkgdesc="A strong UCI chess engine"
 arch=('x86_64' 'i686' 'armv7h' 'aarch64')
 url="https://stockfishchess.org/"
-license=('GPL3')
-depends=('glibc')
+license=('GPL-3.0')
+depends=('glibc' 'gcc-libs')
 # Check EvalFileDefaultName{Big,Small} in src/evaluate.h and change accordingly
 _net_name_big=('b1a57edbea57')
 _net_name_small=('baff1ede1f90')
